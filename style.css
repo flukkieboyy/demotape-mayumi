@@ -1,0 +1,240 @@
+:root {
+    --bg-color: #0a0a0a;
+    --theme-red: #c62828;       /* สีแดงเข้ม เลือดหมู */
+    --theme-red-glow: #ff5252;  /* สีแดงสว่างตอน Hover */
+    --text-color: #e0e0e0;
+    --glass-bg: rgba(20, 20, 20, 0.85);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    height: 100vh;
+    font-family: 'Courier Prime', monospace;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+/* --- NOISE EFFECT (ความเก่า) --- */
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* --- INTRO SCREEN --- */
+#intro-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.intro-content { text-align: center; width: 90%; max-width: 600px; }
+
+.loading-bar {
+    font-size: 0.9rem; color: #666; margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+.loading-cursor { animation: blink 0.8s infinite; }
+
+.main-title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 1s forwards 1s; /* เริ่มแสดงหลังจาก 1 วิ */
+}
+
+.highlight-red {
+    color: var(--theme-red);
+    text-shadow: 2px 2px 10px rgba(198, 40, 40, 0.5);
+}
+
+.sub-title {
+    font-size: 1rem; color: #888;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 2s; /* เริ่มแสดงหลังจาก 2 วิ */
+}
+
+.enter-trigger {
+    border: 1px solid var(--theme-red);
+    color: var(--theme-red);
+    padding: 12px 24px;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: all 0.3s;
+    animation: fadeIn 1s forwards 3s, pulse 2s infinite 3s;
+}
+
+.enter-trigger:hover {
+    background: var(--theme-red);
+    color: #000;
+    box-shadow: 0 0 15px var(--theme-red);
+}
+
+/* --- MAIN PLAYER STAGE --- */
+#main-stage {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 1s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    pointer-events: none; /* ปิดการคลิกตอนยังไม่เริ่ม */
+}
+#main-stage.active { opacity: 1; transform: scale(1); pointer-events: all; }
+
+/* 3D CASSETTE */
+.cassette-wrapper {
+    width: 500px;
+    height: 325px; /* ปรับสัดส่วนให้พอดีกับภาพ */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: float 5s ease-in-out infinite; /* ลอยขึ้นลง */
+    margin-bottom: 30px;
+}
+.cassette-wrapper.flipped { transform: rotateY(180deg); }
+
+.face {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+    background-size: cover;
+    background-position: center;
+}
+
+/* ใส่รูปภาพที่นี่ (Path จะอิงจากไฟล์ CSS) */
+.face-front { background-image: url('assets/mayumi_A.png'); }
+.face-back  { background-image: url('assets/mayumi_B.jpg'); transform: rotateY(180deg); }
+
+/* REELS ANIMATION */
+.reels-container {
+    position: absolute;
+    /* ตำแหน่งนี้ต้องจูนให้ตรงกับรูของรูปภาพคุณ */
+    top: 39.5%; 
+    left: 23%;
+    width: 54%; 
+    height: 20%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.reel {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    /* สร้างลายกงล้อ */
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg 30deg, 
+        rgba(255,255,255,0.2) 30deg 60deg,
+        transparent 60deg 90deg,
+        rgba(255,255,255,0.2) 90deg 120deg,
+        transparent 120deg 150deg,
+        rgba(255,255,255,0.2) 150deg 180deg,
+        transparent 180deg 210deg,
+        rgba(255,255,255,0.2) 210deg 240deg,
+        transparent 240deg 270deg,
+        rgba(255,255,255,0.2) 270deg 300deg,
+        transparent 300deg 330deg,
+        rgba(255,255,255,0.2) 330deg 360deg
+    );
+}
+
+.playing .reel { animation: spin 2.5s linear infinite; }
+
+/* CONTROLS */
+.controls-ui {
+    width: 90%; max-width: 450px;
+    background: var(--glass-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.display-screen {
+    background: #111;
+    color: var(--theme-red);
+    padding: 10px;
+    border: 1px solid #444;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.track-selector {
+    display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;
+}
+
+.track-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #888;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+.track-btn:hover { border-color: var(--theme-red); color: var(--theme-red); }
+.track-btn.active { background: var(--theme-red); color: #000; border-color: var(--theme-red); }
+
+.main-actions { display: flex; gap: 10px; }
+.btn-action {
+    flex: 1;
+    background: #ddd;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    transition: 0.1s;
+}
+.btn-action:hover { background: #fff; }
+.btn-action:active { transform: translateY(2px); }
+
+/* ANIMATIONS KEYFRAMES */
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 600px) {
+    .main-title { font-size: 2rem; }
+    .cassette-wrapper { width: 340px; height: 220px; }
+    .reels-container { top: 38%; left: 22%; width: 56%; } 
+    .reel { width: 40px; height: 40px; }
+}

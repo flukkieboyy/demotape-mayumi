@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAYUMI TAPE | Demo Version</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="noise-overlay"></div>
+
+    <section id="intro-screen">
+        <div class="intro-content">
+            <div class="loading-bar">
+                <span class="loading-cursor">█</span> LOADING ASSETS...
+            </div>
+            
+            <h1 class="main-title">
+                Welcome to<br>
+                <span class="highlight-red">Mayumi Tape</span>
+            </h1>
+            
+            <p class="sub-title">
+                (Demo Tape Version 4 Tracks)
+            </p>
+
+            <div class="enter-trigger" id="enter-btn">
+                [ PRESS ANYWHERE TO ENTER ]
+            </div>
+        </div>
+    </section>
+
+    <section id="main-stage">
+        
+        <div class="cassette-wrapper" id="cassette">
+            <div class="face face-front">
+                <div class="reels-container a-side">
+                    <div class="reel"></div>
+                    <div class="reel"></div>
+                </div>
+            </div>
+
+            <div class="face face-back">
+                <div class="reels-container b-side">
+                    <div class="reel"></div>
+                    <div class="reel"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-ui">
+            <div class="display-screen">
+                <span id="status-text">READY TO PLAY</span>
+            </div>
+
+            <div class="track-selector" id="track-list">
+                </div>
+
+            <div class="main-actions">
+                <button class="btn-action" id="play-btn" onclick="togglePlay()">
+                    ▶ PLAY
+                </button>
+                <button class="btn-action" onclick="flipCassette()">
+                    ↻ FLIP SIDE
+                </button>
+            </div>
+        </div>
+
+    </section>
+
+    <audio id="audio-player"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
