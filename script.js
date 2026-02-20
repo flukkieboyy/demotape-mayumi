@@ -7,8 +7,8 @@ const tapeData = {
         { title: "02. ฉันน่าจะบอกเธอไป (prod. jeuxee)", src: "music/a2_ฉันน่าจะบอกเธอไป.mp3" }
     ],
     B: [
-        { title: "03. ผ่านมานาน (prod. shxbu)", src: "music/b1_ไม่มีใครดีกว่าเธอเลย" },
-        { title: "04. ไม่มีใครดีกว่าเธอเลย (prod. 4lexf)", src: "music/b2_ไม่มีใครดีกว่าเธอเลย" }
+        { title: "03. ผ่านมานาน (prod. shxbu)", src: "music/b1_ไม่มีใครดีกว่าเธอเลย.mp3" },
+        { title: "04. ไม่มีใครดีกว่าเธอเลย (prod. 4lexf)", src: "music/b2_ไม่มีใครดีกว่าเธอเลย.mp3" }
     ]
 };
 
