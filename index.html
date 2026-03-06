@@ -1,78 +1,60 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAYUMI TAPE | Demo Version</title>
-    
+    <title>MAYUMI TAPE - Cassette Player</title>
     <link rel="stylesheet" href="style.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="noise-overlay"></div>
-
-    <section id="intro-screen">
+    <div id="intro-screen">
         <div class="intro-content">
-            <div class="loading-bar">
-                <span class="loading-cursor">█</span> LOADING ASSETS...
+            <h1 class="glitch">MAYUMI TAPE</h1>
+            
+            <div id="loading-section">
+                <p id="loading-text">INITIALIZING SYSTEM...</p>
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
             </div>
-            
-            <h1 class="main-title">
-                Welcome to<br>
-                <span class="highlight-red">Mayumi Tape</span>
-            </h1>
-            
-            <p class="sub-title">
-                (Demo Tape Version 4 Tracks)
-            </p>
 
-            <div class="enter-trigger" id="enter-btn">
-                [ PRESS ANYWHERE TO ENTER ]
+            <div id="password-section" class="hidden">
+                <p>ENTER PASSCODE:</p>
+                <input type="password" id="passcode-input" placeholder="****" maxlength="10">
+                <button id="submit-btn">ACCESS</button>
+                <p id="error-msg" class="hidden">ACCESS DENIED</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="main-stage">
+    <div id="app-container" class="hidden">
         
-        <div class="cassette-wrapper" id="cassette">
-            <div class="face face-front">
-                <div class="reels-container a-side">
-                    <div class="reel"></div>
-                    <div class="reel"></div>
-                </div>
+        <div id="notification-box" class="hidden">
+            <p>Side A ended. Flip tape?</p>
+            <button id="flip-btn">FLIP TO SIDE B</button>
+        </div>
+
+        <div class="player-wrapper">
+            <div class="cassette">
+                <img src="mayumi 2.png" alt="Mayumi Tape" class="cassette-img">
+                
+                <div class="spool spool-left"><div class="gear"></div></div>
+                <div class="spool spool-right"><div class="gear"></div></div>
             </div>
 
-            <div class="face face-back">
-                <div class="reels-container b-side">
-                    <div class="reel"></div>
-                    <div class="reel"></div>
+            <div class="controls">
+                <div class="status-display">
+                    <span id="current-side">SIDE A - TRK 1</span>
+                    <span id="time-display">00:00</span>
+                </div>
+                <div class="buttons">
+                    <button id="play-pause-btn">PAUSE</button>
                 </div>
             </div>
         </div>
 
-        <div class="controls-ui">
-            <div class="display-screen">
-                <span id="status-text">READY TO PLAY</span>
-            </div>
-
-            <div class="track-selector" id="track-list">
-                </div>
-
-            <div class="main-actions">
-                <button class="btn-action" id="play-btn" onclick="togglePlay()">
-                    ▶ PLAY
-                </button>
-                <button class="btn-action" onclick="flipCassette()">
-                    ↻ FLIP SIDE
-                </button>
-            </div>
-        </div>
-
-    </section>
-
-    <audio id="audio-player"></audio>
+    </div>
 
     <script src="script.js"></script>
 </body>
